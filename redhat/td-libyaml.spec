@@ -5,7 +5,7 @@
 Summary: Implementation of a YAML 1.1 parser and emitter
 Name: td-libyaml
 Version: 0.1.4
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: MIT/X Consortium
 Group: Development/Libraries
 URL: http://pyyaml.org/wiki/LibYAML
@@ -14,6 +14,11 @@ Packager: Dries Verachtert <dries@ulyssis.org>
 Vendor: Dag Apt Repository, http://dag.wieers.com/apt/
 
 Source: %{name}-%{version}.tar.gz
+Patch0: libyaml-string-overflow.patch
+Patch1: libyaml-node-id-hardening.patch
+Patch2: libyaml-guard-against-overflows-in-indent-and-flow_level.patch
+Patch3: CVE-2014-2525.patch
+
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
@@ -28,6 +33,10 @@ It includes a Python language binding.
 %prep
 
 %setup -n yaml-%{version}
+%patch0 -p1
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 %build
 
@@ -50,6 +59,13 @@ It includes a Python language binding.
 %{_libdir}/fluent/libyaml/
 
 %changelog
+* Mon Jun 16 2014 IWAI, Masaharu <iwaim.sub@gmail.com> - 0.1.4-2
+- add some patches from Debian wheezy: libyaml 0.1.4-2+deb7u4
+ - libyaml-string-overflow.patch
+ -  libyaml-node-id-hardening.patch
+ -  libyaml-guard-against-overflows-in-indent-and-flow_level.patch
+ -  CVE-2014-2525.patch
+
 * Tue Dec 27 2011 Rilindo Foster (rilindo.foster@monzell.com - 0.1.4-1
 - Updated to release 0.1.4, added path to pkgconfig
 
